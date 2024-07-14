@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- META INFORMATION -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Danial Samadi's Portfolio - Contact</title>
+    <meta
+      name="description"
+      content="Contact page of Danial Samadi's portfolio. Get in touch!"
+    />
+    <link rel="icon" href="/assets/icons/Ghost.svg" />
+
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/typography.css" />
+    <link rel="stylesheet" href="../css/utilities.css" />
+
+    <!-- SCRIPTS -->
+    <script defer src="../js/script.js"></script>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+      <a class="nav-title-link" href="/index.html">
+        <span class="nav-title">Danial Samadi Portfolio</span>
+      </a>
+      <a class="button" href="/project-pages/resume.html">
+        <span class="button-text">Resume</span>
+      </a>
+      <a class="button" href="/project-pages/projects.html">
+        <span class="button-text">Projects</span>
+      </a>
+      <a class="button" href="/project-pages/contact.html">
+        <span class="button-text">Contact</span>
+      </a>
+    </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <div
+      id="main-content"
+      style="
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2em;
+      "
+    >
+      <div class="contact-content">
+        <h2>Contact Dani</h2>
+        <form class="contact-form" action="#" method="post">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer">
+      <a
+        class="icon-link"
+        target="_blank"
+        href="https://github.com/Danialsamadi"
+      >
+        <img
+          src="/assets/icons/Github.svg"
+          class="footer-icon"
+          alt="GitHub Icon"
+        />
+      </a>
+      <a class="icon-link" target="_blank" href="https://t.me/imnotdaniels">
+        <img
+          src="/assets/icons/Telegram.svg"
+          class="footer-icon"
+          alt="Telegram Icon"
+        />
+      </a>
+      <a
+        class="icon-link"
+        href="https://www.linkedin.com/in/danial-samadi-512909147/"
+      >
+        <img
+          src="/assets/icons/Linkedin.svg"
+          class="footer-icon"
+          alt="LinkedIn Icon"
+        />
+      </a>
+    </div>
+  </body>
+</html>
