@@ -1,302 +1,59 @@
 ---
-import { getCollection } from "astro:content";
 import Hero from "@/components/Hero.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
 import Section from "@/components/Section.astro";
 import Layout from "@/layouts/Layout.astro";
-import { KNOWN_TECH, ABOUT_ME } from "@/consts";
+import { KNOWN_TECH, ABOUT_ME, GITHUB_USERNAME } from "@/consts";
+import { getProjects } from "@/lib/projects";
 
-interface Project {
-  title: string;
-  description: string;
-  impact: string;
-  tech: string[];
-  link: string;
-  liveDemo?: string;
-  stars?: number;
-  featured?: boolean;
-}
-
-const projects: Project[] = [
-  {
-    title: "v2go - High-Performance Config Aggregator",
-    description: "Blazingly fast Go-based configuration aggregator that processes 20,000+ configs in just 11 seconds—99.7% faster than Python alternatives. Implements advanced concurrent processing, automatic deduplication, real-time validation, and subscription management for handling large-scale configuration data.",
-    impact: "99.7% performance improvement | Auto-refresh subscriptions | 65 GitHub stars",
-    tech: ["Go", "Concurrency", "Performance Optimization", "CI/CD"],
-    link: "https://github.com/Danialsamadi/v2go",
-    stars: 65,
-    featured: true,
-  },
-  {
-    title: "Syncodoro - Production PWA with Cloud Sync",
-    description: "Full-featured Progressive Web App Pomodoro timer with offline-first architecture, real-time cloud synchronization via Supabase, session analytics dashboard, and export capabilities. Built with modern React patterns and TypeScript for type safety.",
-    impact: "Session analytics | Cloud sync | Offline-first architecture",
-    tech: ["TypeScript", "React", "Supabase", "PWA", "Tailwind CSS", "IndexedDB"],
-    link: "https://github.com/Danialsamadi/Syncodoro",
-    featured: true,
-  },
-  {
-    title: "FindIT - Indoor Navigation System",
-    description: "Cross-platform indoor navigation and positioning system for large buildings like universities, hospitals, and malls. Evolved from a hybrid Java/Python backend to a unified Python architecture, then fully migrated to Flutter for cross-platform delivery. Uses OpenStreetMap APIs, MongoDB for node storage, and REST APIs to provide step-by-step indoor guidance where GPS fails.",
-    impact: "Google Maps for indoor spaces | OpenStreetMap integration | Cross-platform Flutter app",
-    tech: ["Flutter", "Dart", "Python", "MongoDB", "REST APIs", "OpenStreetMap"],
-    link: "#",
-    featured: true,
-  },
-  {
-    title: "Free-macOS - Terminal Memory Monitor",
-    description: "Terminal-based memory monitoring tool that replicates Linux's `free` command for macOS with enhanced visuals. Features real-time updates, interactive progress bars, CLI interface, and automatic unit conversion. Published as a production-ready CLI tool.",
-    impact: "2+ GitHub stars | Poetry package manager | Rich terminal UI",
-    tech: ["Python", "Rich", "Click", "Poetry", "Systems Programming"],
-    link: "https://github.com/Danialsamadi/Free-macos",
-    stars: 2,
-    featured: true,
-  },
-  {
-    title: "3D Point Cloud Visualization",
-    description: "Interactive 3D visualization engine bringing mathematical concepts to life using Three.js. Implements real-time rendering of dynamic point clouds with trigonometric functions and vector mathematics.",
-    impact: "Real-time 3D rendering | Mathematical visualization | WebGL graphics",
-    tech: ["React", "Three.js", "WebGL", "Mathematics"],
-    link: "https://github.com/Danialsamadi/visualArt",
-    featured: true,
-  },
-  {
-    title: "Artist Portfolio Gallery - React Web App",
-    description: "Modern, responsive online gallery designed for a 21-year-old Animation student at Algonquin College to showcase her creative work. Features smooth animations, intuitive navigation, and optimized image loading to highlight her distinct design perspective and storytelling abilities through visual art.",
-    impact: "Client portfolio website | Responsive design | Modern UI/UX",
-    tech: ["React", "JavaScript", "CSS", "Responsive Design", "Web Design"],
-    link: "https://github.com/Danialsamadi/kumo-portfolio",
-    liveDemo: "https://thekumorii.github.io/portfolio/",
-    featured: true,
-  },
-  {
-    title: "Employee Management System - Design Patterns",
-    description: "Enterprise-grade Java application demonstrating professional software architecture with Singleton, Builder, and Factory design patterns. Manages full-time and part-time employees with type-safe operations and comprehensive tracking.",
-    impact: "Production design patterns | Clean architecture | Educational resource",
-    tech: ["Java", "Design Patterns", "OOP", "MVC Architecture"],
-    link: "https://github.com/Danialsamadi/CST8288-lab1",
-  },
-  {
-    title: "WiFi RSSI Trilateration System",
-    description: "Location estimation system using WiFi signal strengths (RSSI) to calculate device position through trilateration algorithms. Demonstrates understanding of wireless networking and computational geometry.",
-    impact: "Location tracking | Algorithm implementation | Wireless networking",
-    tech: ["Python", "Networking", "Algorithms", "Mathematics"],
-    link: "https://github.com/Danialsamadi/rssi",
-  },
-  {
-    title: "Go Memory Leak Tutorial & Profiling",
-    description: "Hands-on educational resource for understanding memory management in Go. Includes real-world memory leak examples, pprof profiling demonstrations, and comprehensive learning materials for production debugging.",
-    impact: "Educational resource | Performance profiling | Debug techniques",
-    tech: ["Go", "pprof", "Memory Management", "Performance"],
-    link: "https://github.com/Danialsamadi/Memmory-leaks-go",
-  },
-];
+const projects = await getProjects();
+const featured = projects.slice(0, 6);
+const totalStars = projects.reduce((n, p) => n + p.stars, 0);
 ---
 
 <Layout title="Danial Samadi Portfolio">
   <Hero />
-  <Section
-    title="Featured Projects"
-    className={"bg-gradient-to-b from-black/70 from-[5%] to-black via-black"}
-  >
-    <div class="w-full max-w-7xl mx-auto space-y-8">
-      <!-- Featured Projects (larger cards) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {
-          projects
-            .filter((project) => project.featured)
-            .map((project) => (
-              <div class="border-2 border-white p-6 rounded-lg hover:bg-white/5 transition-all hover:scale-[1.02] hover:border-blue-400 relative group">
-                {project.featured && (
-                  <span class="absolute -top-3 -right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                    Featured
-                  </span>
-                )}
-                <div class="flex items-start justify-between mb-2">
-                  <h3 class="text-2xl font-bold">{project.title}</h3>
-                  {project.stars && project.stars > 0 && (
-                    <span class="text-yellow-400 text-sm font-semibold flex items-center gap-1">
-                      {project.stars} stars
-                    </span>
-                  )}
-                </div>
-                <p class="text-white/90 mb-3 leading-relaxed">{project.description}</p>
-                <div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/30 rounded-md p-3 mb-4">
-                  <p class="text-sm text-blue-200 font-medium">{project.impact}</p>
-                </div>
-                <div class="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech) => (
-                    <span class="px-3 py-1 bg-gradient-to-r from-white/10 to-white/5 rounded-md text-sm border border-white/20 hover:border-white/40 transition-colors">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {project.link === "#" ? (
-                  <span class="text-white/60 inline-flex items-center font-semibold">
-                    Private Repository
-                    <svg
-                      class="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                      />
-                    </svg>
-                  </span>
-                ) : (
-                  <div class="flex flex-wrap gap-3">
-                    {project.liveDemo && (
-                      <a
-                        href={project.liveDemo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-green-400 hover:text-green-300 hover:underline inline-flex items-center font-semibold"
-                      >
-                        View Live Demo
-                        <svg
-                          class="w-4 h-4 ml-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      </a>
-                    )}
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-blue-400 hover:text-blue-300 hover:underline inline-flex items-center font-semibold"
-                    >
-                      View Source Code
-                      <svg
-                        class="w-4 h-4 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                )}
-              </div>
-            ))
-        }
-      </div>
 
-      <!-- Other Projects (compact grid) -->
-      <div class="pt-8">
-        <h3 class="text-3xl font-bold mb-6 text-center">More Projects</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {
-            projects
-              .filter((project) => !project.featured)
-              .map((project) => (
-                <div class="border border-white/50 p-5 rounded-lg hover:bg-white/5 transition-all hover:border-white group">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="text-lg font-bold leading-tight">{project.title}</h4>
-                    {project.stars && project.stars > 0 && (
-                      <span class="text-yellow-400 text-xs">{project.stars} stars</span>
-                    )}
-                  </div>
-                  <p class="text-white/80 text-sm mb-3 leading-snug line-clamp-3">{project.description}</p>
-                  <div class="bg-white/5 rounded-md p-2 mb-3">
-                    <p class="text-xs text-white/70">{project.impact}</p>
-                  </div>
-                  <div class="flex flex-wrap gap-1 mb-3">
-                    {project.tech.slice(0, 3).map((tech) => (
-                      <span class="px-2 py-0.5 bg-white/10 rounded text-xs">
-                        {tech}
-                      </span>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <span class="px-2 py-0.5 text-xs text-white/60">
-                        +{project.tech.length - 3}
-                      </span>
-                    )}
-                  </div>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-blue-400 hover:text-blue-300 text-sm inline-flex items-center group-hover:underline"
-                  >
-                    View Project
-                    <svg
-                      class="w-3 h-3 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              ))
-          }
-        </div>
-      </div>
-
-      <!-- GitHub Profile Link -->
-      <div class="text-center pt-8">
-        <a
-          href="https://github.com/Danialsamadi?tab=repositories"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border-2 border-white rounded-lg font-semibold transition-all hover:scale-105"
-        >
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-          View All Repositories on GitHub
-        </a>
-      </div>
+  <Section title="Operations" index="01">
+    <div class="tag opacity-60 mb-6">
+      LIVE FEED / API.GITHUB.COM / {projects.length} UNITS TRACKED / {
+        totalStars
+      } STARS AGGREGATE
+    </div>
+    <div class="blueprint grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      {featured.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+    <div class="flex justify-end mt-6">
+      <a
+        href="/projects"
+        class="tag border border-[#2a2a2a] px-6 py-3 hover:bg-hazard hover:text-[#0a0a0a] transition-colors"
+      >
+        [ FULL REGISTRY / {projects.length} UNITS &gt;&gt;&gt; ]
+      </a>
     </div>
   </Section>
-  <Section title="Technologies I Know" full_screen={false}>
-    <div class="w-full grid place-items-center">
-      <div
-        class="w-full gap-4 flex flex-wrap px-3 max-w-xl text-lg justify-center"
-      >
-        {KNOWN_TECH.map((x) => <Breadcrumb title={x} />)}
-      </div>
+
+  <Section title="Capabilities" index="02">
+    <div class="flex flex-wrap gap-2 max-w-4xl">
+      {KNOWN_TECH.map((x) => <Breadcrumb title={x} />)}
     </div>
   </Section>
-  <Section title="About Me">
-    <div class="w-full grid place-items-center">
+
+  <Section title="Dossier" index="03">
+    <div class="blueprint grid-cols-1 md:grid-cols-3 max-w-6xl">
+      <div class="p-5 tag opacity-60 md:col-span-1">
+        <p>SUBJECT / DANIAL SAMADI</p>
+        <p class="mt-2">ROLE / FULL-STACK DEVELOPER</p>
+        <p class="mt-2">
+          EDU / ALGONQUIN COLLEGE — COMPUTER PROGRAMMING / GRADUATED DEC 2025
+        </p>
+        <p class="mt-2">SRC / GITHUB.COM/{GITHUB_USERNAME.toUpperCase()}</p>
+      </div>
       <div
-        class="max-w-4xl text-xl md:text-lg opacity-90 text-center justify-evenly"
+        class="p-5 md:col-span-2 text-sm leading-relaxed whitespace-pre-line opacity-90"
       >
-        <p>{ABOUT_ME}</p>
+        {ABOUT_ME}
       </div>
     </div>
   </Section>

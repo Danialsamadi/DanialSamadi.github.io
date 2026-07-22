@@ -2,20 +2,21 @@
 import { SITE_TITLE, NAV_LINKS as links } from "@/consts";
 ---
 
-<nav class="w-full !z-[9999] py-5 px-4 bg-black/90 backdrop-blur-sm">
-  <div
-    class="w-full grid gap-4 md:px-5 place-items-center grid-cols-1 md:flex md:justify-between md:px-4"
-  >
-    <a href="/">
-      <div
-        id="logo"
-        class="pt-2 pb-1 !grid !place-items-center select-none leading-none hover:bg-black bg-white scale-110 hover:text-white text-black px-4 transition-all ease-in-out"
-      >
-        {SITE_TITLE}
-      </div>
+<nav
+  class="w-full !z-[9999] border-b border-[#2a2a2a] bg-[#0a0a0a]/95 backdrop-blur-sm"
+>
+  <div class="flex flex-wrap items-stretch justify-between">
+    <a
+      href="/"
+      class="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-3 border-r border-[#2a2a2a] hover:bg-[#eaeaea] hover:text-[#0a0a0a] transition-colors shrink-0"
+    >
+      <span class="bg-hazard w-2 h-2 inline-block blink"></span>
+      <span class="tag font-bold whitespace-nowrap">{SITE_TITLE} ®</span>
     </a>
-    <div class="flex flex-wrap gap-4 md:pr-5">
-      <div class="hidden md:block">/</div>
+    <div class="hidden lg:flex items-center px-4 tag opacity-50">
+      SYS.PORTFOLIO / REV 2.6 / ONLINE
+    </div>
+    <div class="flex items-stretch flex-1 justify-end">
       {
         links.map((link) => {
           const href =
@@ -28,33 +29,20 @@ import { SITE_TITLE, NAV_LINKS as links } from "@/consts";
           const isActive =
             href === pathname || href === "/" + (subpath?.[0] || "");
           return (
-            <>
-              <a
-                class:list={[{ "bg-white text-black": isActive }]}
-                class="hover:bg-white hover:text-black transition-all ease-in-out px-2 max-w-fit"
-                href={`/${href}`}
-              >
-                <div>{link.title}</div>
-              </a>
-              <div class="hidden md:block">/</div>
-            </>
+            <a
+              class:list={[
+                "flex items-center px-2 sm:px-3 md:px-5 py-3 border-l border-[#2a2a2a] tag whitespace-nowrap transition-colors",
+                isActive
+                  ? "bg-hazard text-[#0a0a0a] font-bold"
+                  : "hover:bg-[#eaeaea] hover:text-[#0a0a0a]",
+              ]}
+              href={`/${href}`}
+            >
+              [ {link.title} ]
+            </a>
           );
         })
       }
     </div>
   </div>
 </nav>
-
-<script>
-  window.addEventListener("scroll", () => {
-    const logo = document.getElementById("logo");
-    if (!logo) return;
-    if (window.scrollY > 100) {
-      logo.className =
-        "pt-2 pb-1 !grid !place-items-center select-none leading-none hover:bg-white bg-black scale-100 hover:text-black text-white px-4 transition-all ease-in-out";
-    } else {
-      logo.className =
-        "pt-2 pb-1 !grid !place-items-center select-none leading-none hover:bg-black bg-white scale-110 hover:text-white text-black px-4 transition-all ease-in-out";
-    }
-  });
-</script>

@@ -1,66 +1,89 @@
 ---
 import { Image } from "astro:assets";
 import HeroImg from "@/ghost.gif";
-import { QUOTE, SITE_TITLE } from "@/consts";
+import { QUOTE, SITE_TITLE, GITHUB_USERNAME } from "@/consts";
+
+const [first, last] = SITE_TITLE.split(" ");
 ---
 
-<div class="hero-bg hidden md:block h-screen hero-bg-animate absolute top-0"></div>
+<div
+  class="hero-bg hidden md:block h-screen hero-bg-animate absolute top-0 overflow-hidden"
+>
+</div>
 <section
-  class="h-screen !z-[20] relative w-full grid grid-cols-1 grid-rows-1 sm:grid-cols-2 md:grid-cols-2 gap-4 items-center"
+  class="min-h-[calc(100vh-6rem)] !z-[20] relative w-full flex flex-col justify-between"
   id="hero"
 >
-  <div class="grid place-items-center">
-    <div class="text-center -mt-10 space-y-4">
-      <h1 class="font-bold text-6xl md:text-7xl animate-fade-in">{`<${SITE_TITLE} />`}</h1>
-      <h2 class="text-xl md:text-2xl opacity-95 font-medium">
+  <div class="px-4 md:px-8 pt-8 flex justify-between tag opacity-60">
+    <span>&gt;&gt;&gt; PERSONNEL FILE / {GITHUB_USERNAME.toUpperCase()}</span>
+    <span class="hidden md:inline">LAT 45.4215 / LON -75.6972</span>
+  </div>
+
+  <div
+    class="px-4 md:px-8 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 items-center"
+  >
+    <div>
+      <h1 class="font-display type-macro">
+        {first}<br />
+        <span class="text-hazard">{last}</span>
+      </h1>
+      <div
+        class="mt-6 max-w-2xl border-l-2 border-hazard pl-4 py-1 tag text-sm"
+      >
         {QUOTE}
-      </h2>
-      <div class="flex items-center justify-center gap-3 md:gap-4 pt-4 flex-wrap px-4">
-        <a
-          href="#featuredprojects"
-          class="px-4 py-2.5 md:px-6 md:py-3 bg-white text-black text-sm md:text-base font-semibold rounded-lg hover:bg-white/90 transition-all hover:scale-105 shadow-lg"
-        >
-          View Projects
-        </a>
-        <a
-          href="/Resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-4 py-2.5 md:px-6 md:py-3 bg-blue-600 text-white text-sm md:text-base font-semibold rounded-lg hover:bg-blue-700 transition-all hover:scale-105 shadow-lg inline-flex items-center gap-2"
-        >
-          <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          View Resume
-        </a>
-        <a
-          href="https://github.com/Danialsamadi"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-4 py-2.5 md:px-6 md:py-3 border-2 border-white text-sm md:text-base font-semibold rounded-lg hover:bg-white/10 transition-all hover:scale-105"
-        >
-          GitHub Profile
-        </a>
       </div>
     </div>
+    <div class="hidden md:block border border-[#2a2a2a] p-2 relative">
+      <span class="absolute top-1 left-2 tag opacity-50">SPECIMEN / 👻-01</span>
+      <Image
+        alt="ghost"
+        src={HeroImg}
+        class="invert brightness-200 contrast-125 w-56 lg:w-72"
+      />
+      <span class="absolute bottom-1 right-2 tag opacity-50">NON-HOSTILE</span>
+    </div>
   </div>
-  <div>
-    <Image
-      alt="Hero"
-      src={HeroImg}
-      class="brightness-200 w-full scale-90 invert"
-    />
+
+  <div class="border-t border-[#2a2a2a] mt-10">
+    <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch">
+      <a
+        href="#operations"
+        class="px-6 py-4 bg-hazard text-[#0a0a0a] font-bold tag border-b sm:border-b-0 sm:border-r border-[#2a2a2a] hover:opacity-80 transition-opacity"
+      >
+        [ VIEW OPERATIONS ]
+      </a>
+      <a
+        href="/Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-6 py-4 tag border-b sm:border-b-0 sm:border-r border-[#2a2a2a] hover:bg-[#eaeaea] hover:text-[#0a0a0a] transition-colors"
+      >
+        [ RESUME.PDF ]
+      </a>
+      <a
+        href={`https://github.com/${GITHUB_USERNAME}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-6 py-4 tag sm:border-r border-[#2a2a2a] hover:bg-[#eaeaea] hover:text-[#0a0a0a] transition-colors"
+      >
+        [ GITHUB &gt;&gt;&gt; ]
+      </a>
+      <div class="hidden md:flex items-center px-6 tag opacity-50 ml-auto">
+        SCROLL FOR TELEMETRY ▼
+      </div>
+    </div>
   </div>
 </section>
 
 <script is:inline>
   const hero_bg = document.querySelector(".hero-bg-animate");
-
-  setInterval(() => {
-    let binaryText = "";
-    for (let i = 0; i < 1000; i++) {
-      binaryText += Math.floor(Math.random() * 2).toString();
-    }
-    hero_bg.textContent = binaryText;
-  }, 300);
+  if (hero_bg) {
+    setInterval(() => {
+      let binaryText = "";
+      for (let i = 0; i < 2000; i++) {
+        binaryText += Math.floor(Math.random() * 2).toString();
+      }
+      hero_bg.textContent = binaryText;
+    }, 300);
+  }
 </script>

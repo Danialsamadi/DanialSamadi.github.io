@@ -1,0 +1,61 @@
+---
+import type { Project } from "@/lib/projects";
+
+type Props = { project: Project; index: number };
+const { project: p, index } = Astro.props;
+const id = String(index + 1).padStart(2, "0");
+const pushed = p.pushed.slice(0, 10);
+---
+
+<article class="p-5 flex flex-col gap-3 group relative">
+  <span class="absolute top-2 right-3 tag opacity-40">+</span>
+  <div class="flex items-baseline justify-between gap-2">
+    <h3 class="font-bold uppercase tracking-wide break-all">
+      <span class="text-hazard">{id} /</span>
+      {p.name}
+    </h3>
+    <data value={p.stars} class="tag shrink-0"
+      >★ {String(p.stars).padStart(3, "0")}</data
+    >
+  </div>
+  <dl class="tag opacity-60 flex flex-wrap gap-x-4 gap-y-1">
+    <div>
+      <dt class="inline">LANG /</dt>
+      <dd class="inline">{p.language}</dd>
+    </div>
+    <div><dt class="inline">FORKS /</dt> <dd class="inline">{p.forks}</dd></div>
+    <div>
+      <dt class="inline">LAST PUSH /</dt>
+      <dd class="inline">{pushed}</dd>
+    </div>
+  </dl>
+  <p class="text-sm opacity-90 leading-relaxed flex-1">{p.description}</p>
+  <div class="flex flex-wrap gap-4 tag pt-1">
+    {
+      p.url ? (
+        <a
+          href={p.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-hazard underline underline-offset-4"
+        >
+          [ SOURCE &gt;&gt;&gt; ]
+        </a>
+      ) : (
+        <span class="text-hazard">[ RESTRICTED / PRIVATE ]</span>
+      )
+    }
+    {
+      p.homepage && (
+        <a
+          href={p.homepage}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-hazard underline underline-offset-4"
+        >
+          [ LIVE ]
+        </a>
+      )
+    }
+  </div>
+</article>

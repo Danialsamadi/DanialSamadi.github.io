@@ -1,20 +1,27 @@
 ---
 type Props = {
   title: string;
-  full_screen?: boolean;
+  index?: string;
   className?: string;
 };
-const { title = "Section", full_screen = false, className = "" } = Astro.props;
+const { title = "Section", index = "00", className = "" } = Astro.props;
 ---
 
 <section
   id={title.toLowerCase().replaceAll(" ", "")}
-  class={`${full_screen ? "h-screen" : ""} px-4 py-10 w-screen !overflow-x-hidden ${className}`}
+  class={`w-screen !overflow-x-hidden border-t border-[#2a2a2a] ${className}`}
 >
-  <div class="w-full grid place-items-center">
-    <h2 class="text-4xl md:text-6xl text-center">{`<${title} />`}</h2>
+  <div
+    class="flex items-baseline justify-between px-4 md:px-8 pt-10 pb-6 gap-4"
+  >
+    <h2 class="font-display type-section">
+      {title}
+    </h2>
+    <div class="tag opacity-50 shrink-0">
+      /// SEC.{index}
+    </div>
   </div>
-  <div class="w-full mt-10 px-4">
+  <div class="w-full px-4 md:px-8 pb-16">
     <slot />
   </div>
 </section>
